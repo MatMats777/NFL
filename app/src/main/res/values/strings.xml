@@ -2,4 +2,16 @@
     <string name="app_name">NFL</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    // ranking layout
+    <string name="ranking_title">Ranking</string>
+    <string name="conference">Conference</string>
+    <string name="division">Division</string>
+    <string name="afc">AFC</string>
+    <string name="nfc">NFC</string>
+    <string name="west">West</string>
+    <string name="east">East</string>
+    <string name="north">North</string>
+    <string name="south">South</string>
+    <string name="all">All</string>
 </resources>

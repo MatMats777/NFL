@@ -1,11 +1,14 @@
 package com.example.x61224.nfl;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class RankingActivity extends AppCompatActivity {
+public class RankingActivity extends AppCompatActivity implements RankingActivityFragment.Callback{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,5 +37,14 @@ public class RankingActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(String teamId) {
+        // It is called from MainActivityFragment, when a movie is selected.
+        // Start Detail Activity, sending the uri param.
+
+        //Intent intent = new Intent(this, RosterActivity.class).setData(contentUri);
+        //startActivity(intent);
     }
 }

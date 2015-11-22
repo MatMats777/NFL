@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.x61224.nfl" >
 
+    <!-- This permission is necessary in order for Movies to perform network access. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Provider -->
+        <provider
+            android:authorities="com.example.x61224.nfl"
+            android:name=".data.NFLProvider"
+            android:exported="false"
+            android:syncable="true" />
     </application>
 
 </manifest>
