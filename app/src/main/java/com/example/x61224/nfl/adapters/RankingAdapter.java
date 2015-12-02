@@ -52,12 +52,13 @@ public class RankingAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String division = prefs.getString("division", "north");
-        String rankStr;
+        Integer rank;
         if(division.equals("ALL")){
-            rankStr = cursor.getString(RankingActivityFragment.COL_RANK_CONFERENCE);
+            rank = cursor.getInt(RankingActivityFragment.COL_RANK_CONFERENCE);
         }
         else
-            rankStr = cursor.getString(RankingActivityFragment.COL_RANK_DIVISION);
+            rank = cursor.getInt(RankingActivityFragment.COL_RANK_DIVISION);
+        String rankStr = rank.toString();
         String nameStr = cursor.getString(RankingActivityFragment.COL_NAME);
         String marketStr = cursor.getString(RankingActivityFragment.COL_MARKET);
 

@@ -12,7 +12,7 @@ import com.example.x61224.nfl.data.NFLContract.TeamsEntry;
 public class NFLDbHelper  extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     static final String DATABASE_NAME = "teams.db";
 
@@ -32,8 +32,8 @@ public class NFLDbHelper  extends SQLiteOpenHelper {
                 TeamsEntry.COLUMN_MARKET + " TEXT NOT NULL, " +
                 TeamsEntry.COLUMN_CONFERENCE + " TEXT, " +
                 TeamsEntry.COLUMN_DIVISION + " TEXT NOT NULL, " +
-                TeamsEntry.COLUMN_RANK_CONFERENCE + " TEXT NOT NULL, " +
-                TeamsEntry.COLUMN_RANK_DIVISION + " TEXT NOT NULL, " +
+                TeamsEntry.COLUMN_RANK_CONFERENCE + " INTEGER NOT NULL, " +
+                TeamsEntry.COLUMN_RANK_DIVISION + " INTEGER NOT NULL, " +
 
                 // To assure the application have different team_id for each entry
                 " UNIQUE (" + TeamsEntry.COLUMN_TEAM_ID + ") ON CONFLICT REPLACE);";

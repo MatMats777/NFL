@@ -133,6 +133,8 @@ public class NFLSyncAdapter extends AbstractThreadedSyncAdapter {
         String teamMarket;
         String teamRankConference;
         String teamRankDivision;
+        Integer teamRankConferenceInt;
+        Integer teamRankDivisionInt;
 
         Vector<ContentValues> cVVector = new Vector<>(32);
 
@@ -157,7 +159,9 @@ public class NFLSyncAdapter extends AbstractThreadedSyncAdapter {
                         teamMarket = teamJson.getString(MARKET);
                         JSONObject rankJson = teamJson.getJSONObject(RANK);
                         teamRankConference = rankJson.getString(CONFERENCE);
+                        teamRankConferenceInt = Integer.parseInt(teamRankConference);
                         teamRankDivision = rankJson.getString(DIVISION);
+                        teamRankDivisionInt = Integer.parseInt(teamRankDivision);
 
                         System.out.println(conferenceName + " - " + divisionName + " - " + teamId + " - " + teamName + " - " +
                         teamMarket + " - " + teamRankConference + " - " + teamRankDivision);
@@ -168,8 +172,8 @@ public class NFLSyncAdapter extends AbstractThreadedSyncAdapter {
                         cValues.put(NFLContract.TeamsEntry.COLUMN_MARKET, teamMarket);
                         cValues.put(NFLContract.TeamsEntry.COLUMN_CONFERENCE, conferenceName);
                         cValues.put(NFLContract.TeamsEntry.COLUMN_DIVISION, divisionName);
-                        cValues.put(NFLContract.TeamsEntry.COLUMN_RANK_CONFERENCE, teamRankConference);
-                        cValues.put(NFLContract.TeamsEntry.COLUMN_RANK_DIVISION, teamRankDivision);
+                        cValues.put(NFLContract.TeamsEntry.COLUMN_RANK_CONFERENCE, teamRankConferenceInt);
+                        cValues.put(NFLContract.TeamsEntry.COLUMN_RANK_DIVISION, teamRankDivisionInt);
 
                         cVVector.add(cValues);
                     }
