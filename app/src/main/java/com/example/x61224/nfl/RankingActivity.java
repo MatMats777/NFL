@@ -8,12 +8,16 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.x61224.nfl.sync.NFLSyncAdapter;
+
 public class RankingActivity extends AppCompatActivity implements RankingActivityFragment.Callback{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
+        NFLSyncAdapter.initializeSyncAdapter(this);
+        NFLSyncAdapter.syncImmediately(this);
     }
 
 

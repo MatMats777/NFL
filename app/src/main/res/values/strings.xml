@@ -14,4 +14,7 @@
     <string name="north">North</string>
     <string name="south">South</string>
     <string name="all">All</string>
+
+    <string name="content_authority">com.example.x61224.nfl</string>
+    <string name="sync_account_type">nfl.example.com</string>
 </resources>

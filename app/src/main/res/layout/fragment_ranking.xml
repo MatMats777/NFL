@@ -14,18 +14,21 @@
         android:id="@+id/ranking_title"
         android:text="@string/ranking_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="30sp"/>
 
     <TextView
         android:id="@+id/conference_label"
         android:text="@string/conference"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="20sp"/>
 
     <RadioGroup
         android:id="@+id/conference_radio"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <RadioButton
             android:id="@+id/afc_button"
             android:layout_width="wrap_content"
@@ -42,12 +45,14 @@
         android:id="@+id/division_label"
         android:text="@string/division"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="20sp"/>
 
     <RadioGroup
         android:id="@+id/division_radio"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <RadioButton
             android:id="@+id/north_button"
             android:layout_width="wrap_content"
