@@ -176,6 +176,9 @@ public class NFLSyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             }
 
+            // delete old data
+            getContext().getContentResolver().delete(NFLContract.TeamsEntry.CONTENT_URI, null, null);
+
             // add all reviews to database
             Integer inserted = 0;
             if ( cVVector.size() > 0 ) {

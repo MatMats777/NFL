@@ -1,7 +1,9 @@
 package com.example.x61224.nfl.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +50,14 @@ public class RankingAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-        String rankStr = cursor.getString(RankingActivityFragment.COL_RANK_CONFERENCE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String division = prefs.getString("division", "north");
+        String rankStr;
+        if(division.equals("ALL")){
+            rankStr = cursor.getString(RankingActivityFragment.COL_RANK_CONFERENCE);
+        }
+        else
+            rankStr = cursor.getString(RankingActivityFragment.COL_RANK_DIVISION);
         String nameStr = cursor.getString(RankingActivityFragment.COL_NAME);
         String marketStr = cursor.getString(RankingActivityFragment.COL_MARKET);
 

@@ -93,43 +93,9 @@ public class RankingActivityFragment extends Fragment implements LoaderManager.L
         return super.onOptionsItemSelected(item);
     }
 
-    // Teste
-    public void fakedata(){
-        ContentValues movieValues = new ContentValues();
-        // set each column of movies db
-        movieValues.put(TeamsEntry.COLUMN_TEAM_ID, "NE");
-        movieValues.put(TeamsEntry.COLUMN_NAME, "Patriots");
-        movieValues.put(TeamsEntry.COLUMN_MARKET, "New England");
-        movieValues.put(TeamsEntry.COLUMN_CONFERENCE, "AFC");
-        movieValues.put(TeamsEntry.COLUMN_DIVISION, "AFC_EAST");
-        movieValues.put(TeamsEntry.COLUMN_RANK_CONFERENCE, "1");
-        movieValues.put(TeamsEntry.COLUMN_RANK_DIVISION, "1");
-        getContext().getContentResolver().insert(
-                NFLContract.TeamsEntry.CONTENT_URI,
-                movieValues
-        );
-
-        ContentValues xmovieValues = new ContentValues();
-        // set each column of movies db
-        xmovieValues.put(TeamsEntry.COLUMN_TEAM_ID, "BUF");
-        xmovieValues.put(TeamsEntry.COLUMN_NAME, "Bills");
-        xmovieValues.put(TeamsEntry.COLUMN_MARKET, "Buffalo");
-        xmovieValues.put(TeamsEntry.COLUMN_CONFERENCE, "AFC");
-        xmovieValues.put(TeamsEntry.COLUMN_DIVISION, "AFC_EAST");
-        xmovieValues.put(TeamsEntry.COLUMN_RANK_CONFERENCE, "6");
-        xmovieValues.put(TeamsEntry.COLUMN_RANK_DIVISION, "2");
-        getContext().getContentResolver().insert(
-                NFLContract.TeamsEntry.CONTENT_URI,
-                xmovieValues
-        );
-        System.out.println("INSERT COMPLETE");
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Teste
-        fakedata();
 
         // Initialize adapter
         rankingAdapter = new RankingAdapter(getActivity(), null, 0);
@@ -163,7 +129,6 @@ public class RankingActivityFragment extends Fragment implements LoaderManager.L
                 switch (checkedId) {
                     case R.id.afc_button:
                         prefs.edit().putString("conference", "AFC").apply();
-                        System.out.println("AFC");
                         break;
                     case R.id.nfc_button:
                         prefs.edit().putString("conference", "NFC").apply();
@@ -190,7 +155,6 @@ public class RankingActivityFragment extends Fragment implements LoaderManager.L
                         break;
                     case R.id.east_button:
                         prefs.edit().putString("division", "EAST").apply();
-                        System.out.println("EAST");
                         break;
                     case R.id.all_button:
                         prefs.edit().putString("division", "ALL").apply();
