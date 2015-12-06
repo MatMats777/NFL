@@ -6,12 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Permissions required by the sync adapter -->
-    <uses-permission
-        android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission
-        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission
-        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -30,15 +27,16 @@
 
         <!-- Provider -->
         <provider
-            android:authorities="com.example.x61224.nfl"
             android:name=".data.NFLProvider"
+            android:authorities="com.example.x61224.nfl"
             android:exported="false"
             android:syncable="true" />
 
-        <service android:name=".sync.NFLAuthenticatorService">
+        <service android:name=".sync.NFLAuthenticatorService" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
@@ -47,16 +45,21 @@
         <!-- The SyncAdapter service -->
         <service
             android:name=".sync.NFLSyncService"
-            android:exported="true"
-            >
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
+
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
 
+        <activity
+            android:name=".RosterActivity"
+            android:label="@string/title_activity_roster"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>
