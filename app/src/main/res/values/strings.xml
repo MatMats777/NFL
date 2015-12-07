@@ -18,4 +18,5 @@
     <string name="content_authority">com.example.x61224.nfl</string>
     <string name="sync_account_type">nfl.example.com</string>
     <string name="title_activity_roster">RosterActivity</string>
+    <string name="roster_title">Roster</string>
 </resources>
