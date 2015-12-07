@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.x61224.nfl.data.NFLContract.TeamsEntry;
+import com.example.x61224.nfl.data.NFLContract.PlayersEntry;
 
 /**
  * Created by x61224 on 11/20/2015.
@@ -34,9 +35,36 @@ public class NFLDbHelper  extends SQLiteOpenHelper {
                 TeamsEntry.COLUMN_DIVISION + " TEXT NOT NULL, " +
                 TeamsEntry.COLUMN_RANK_CONFERENCE + " INTEGER NOT NULL, " +
                 TeamsEntry.COLUMN_RANK_DIVISION + " INTEGER NOT NULL, " +
+                " UNIQUE (" + TeamsEntry.COLUMN_TEAM_ID + ") ON CONFLICT REPLACE);";
+
+        final String SQL_CREATE_ROSTER_TABLE = "CREATE TABLE " + NFLContract.PlayersEntry.TABLE_NAME + " (" +
+                PlayersEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+
+                PlayersEntry.COLUMN_ROSTER_ID + " TEXT NOT NULL, " +
+                PlayersEntry.COLUMN_POSITION_TYPE + " TEXT NOT NULL, " +
+                PlayersEntry.COLUMN_POSITION_NAME + " TEXT NOT NULL, " +
+                PlayersEntry.COLUMN_POSITION_DESC + " TEXT NOT NULL," +
+                PlayersEntry.COLUMN_DEFENSE_TYPE + " TEXT," +
+
+                PlayersEntry.COLUMN_PLAYER_ID + " TEXT NOT NULL, " +
+                PlayersEntry.COLUMN_PLAYER_NAME + " TEXT NOT NULL, " +
+
+                PlayersEntry.COLUMN_PLAYER_POSITION + " TEXT NOT NULL, " +
+                PlayersEntry.COLUMN_PLAYER_JERSEY_NUMBER + " INTEGER NOT NULL, " +
+                PlayersEntry.COLUMN_PLAYER_STATUS + " TEXT NOT NULL, " +
+                PlayersEntry.COLUMN_PLAYER_DEPTH + " INTEGER NOT NULL, " +
+
+                " FOREIGN KEY (" + PlayersEntry.COLUMN_ROSTER_ID + ") REFERENCES " +
+                TeamsEntry.TABLE_NAME + " (" + TeamsEntry.COLUMN_TEAM_ID + "), " +
+
+                " UNIQUE (" + PlayersEntry.COLUMN_ROSTER_ID + ") ON CONFLICT REPLACE);";
+
+
+        sqLiteDatabase.execSQL(SQL_CREATE_ROSTER_TABLE);
 
                 // To assure the application have different team_id for each entry
-                " UNIQUE (" + TeamsEntry.COLUMN_TEAM_ID + ") ON CONFLICT REPLACE);";
+
+
 
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIES_TABLE);
     }

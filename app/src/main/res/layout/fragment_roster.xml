@@ -1,6 +1,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_roster"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RosterActivityFragment"
@@ -26,13 +27,19 @@
 
     </LinearLayout>
 
-
-    <ListView
-        android:id="@+id/roster_list_view"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView" />
 
-    </ListView>
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gridview_roster"
+        android:numColumns="5"
+        android:nestedScrollingEnabled="false" />
+
 
 </LinearLayout>

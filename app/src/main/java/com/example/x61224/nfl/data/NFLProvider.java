@@ -20,6 +20,8 @@ public class NFLProvider extends ContentProvider {
 
     static final int TEAMS = 100;
     static final int TEAM_WITH_ID = 101;
+    static final int ROSTERS = 200;
+    static final int ROSTER_WITH_ID = 201;
 
     static UriMatcher buildUriMatcher() {
         // match uri (expression) with some string to facilitate

@@ -30,7 +30,7 @@ import java.util.Vector;
 /**
  * Created by x61221 on 12/3/2015.
  */
-public class AsyncTask extends AbstractThreadedSyncAdapter {
+public class RosterAsyncTask extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = NFLSyncAdapter.class.getSimpleName();
     // Interval at which to sync with the ranking, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
@@ -38,7 +38,7 @@ public class AsyncTask extends AbstractThreadedSyncAdapter {
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 
-    public AsyncTask(Context context, boolean autoInitialize) {
+    public RosterAsyncTask(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
 

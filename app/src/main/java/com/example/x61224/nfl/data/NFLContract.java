@@ -18,6 +18,7 @@ public class NFLContract {
 
     // Possible paths (appended to base content URI for possible URI's)
     public static final String PATH_TEAMS = "teams";
+    public static final String PATH_ROSTER = "roster";
 
     /* Inner class that defines the table contents of the movies table */
     public static final class TeamsEntry implements BaseColumns {
@@ -40,6 +41,49 @@ public class NFLContract {
         public static final String COLUMN_DIVISION = "division";
         public static final String COLUMN_RANK_CONFERENCE = "rank_conference";
         public static final String COLUMN_RANK_DIVISION = "rank_division";
+
+
+        public static Uri buildTeamUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildTeamUriWithId(String team_id) {
+            return CONTENT_URI.buildUpon().appendPath(team_id).build();
+        }
+
+        public static Uri buildTeams() {
+            return CONTENT_URI;
+        }
+
+        public static String getIdFromUri(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
+    }
+
+    public static final class PlayersEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ROSTER).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ROSTER;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ROSTER;
+
+        // Table name
+        public static final String TABLE_NAME = "roster";
+
+        public static final String COLUMN_ROSTER_ID = "roster_id";
+        public static final String COLUMN_POSITION_TYPE = "position_type";
+        public static final String COLUMN_POSITION_NAME = "position_name";
+        public static final String COLUMN_POSITION_DESC = "position_desc";
+        public static final String COLUMN_DEFENSE_TYPE = "defense_type";
+        public static final String COLUMN_PLAYER_ID = "player_id";
+        public static final String COLUMN_PLAYER_NAME = "player_name";
+        public static final String COLUMN_PLAYER_POSITION = "player_position";
+        public static final String COLUMN_PLAYER_JERSEY_NUMBER = "player_jersey_number";
+        public static final String COLUMN_PLAYER_STATUS = "player_status";
+        public static final String COLUMN_PLAYER_DEPTH = "player_depth";
 
 
         public static Uri buildTeamUri(long id) {
