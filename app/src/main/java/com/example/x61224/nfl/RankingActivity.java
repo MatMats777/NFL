@@ -48,7 +48,7 @@ public class RankingActivity extends AppCompatActivity implements RankingActivit
         // It is called from MainActivityFragment, when a movie is selected.
         // Start Detail Activity, sending the uri param.
 
-        //Intent intent = new Intent(this, RosterActivity.class).setData(contentUri);
-        //startActivity(intent);
+        Intent intent = new Intent(this, RosterActivity.class).putExtra ("team_id", teamId);
+        startActivity(intent);
     }
 }
