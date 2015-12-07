@@ -11,9 +11,14 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.x61224.nfl.R;
+import com.example.x61224.nfl.model.Player;
 import com.example.x61224.nfl.model.Roster;
 
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by x61221 on 12/3/2015.
@@ -21,145 +26,91 @@ import java.util.List;
 public class RosterAdapter extends BaseAdapter {
     private final Context mContext;
     private final LayoutInflater mInflater;
+    private final Vector<Player> mLock = new Vector<Player>();
 
-    private final Roster mLock = new Roster();
+    public Vector<Vector<Player>> mObjects = new Vector<Vector<Player>>(3);
 
     public RosterAdapter(Context context,Roster roster) {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mObjects.add(0,roster.offense);
+        mObjects.add(1,roster.defense);
+        mObjects.add(2,roster.special_team);
     }
 
     public Context getContext() {
         return mContext;
     }
 
-    //public void add(Roster object) {
-    //    synchronized (mLock) {
-    //        mObjects.add(object);
-    //    }
-        //notifyDataSetChanged();
-    //}
-
-    //public void clear() {
-     //   synchronized (mLock) {
-     //       mObjects.clear();
-     //   }
-        //notifyDataSetChanged();
-   // }
-
-    public void setData(Roster data) {
-        //clear();
-        //add(data);
+    public void add(Vector<Player> object) {
+        synchronized (mLock) {
+            mObjects.add(object);
+        }
+        notifyDataSetChanged();
     }
 
-    @Override
-    public boolean areAllItemsEnabled() {
-        return false;
+    public void clear() {
+        synchronized (mLock) {
+            mObjects.clear();
+        }
+        notifyDataSetChanged();
     }
 
-    @Override
-    public boolean isEnabled(int position) {
-        return false;
-    }
-
-    @Override
-    public void registerDataSetObserver(DataSetObserver observer) {
-
-    }
-
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
-
+    public void setData(Vector<Vector<Player>> data) {
+        clear();
+        for (Vector<Player> player : data)
+        add(player);
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return mObjects.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public String getItem(int position) {
+        Vector<String> players= new Vector<String>();
+        for(int i=0;i<3;i++)
+            for(int j=0;j<mObjects.get(i).size();j++) {
+                players.add(5*i, mObjects.get(i).get(j).player_name);
+                players.add(5*i+1, mObjects.get(i).get(j).position_desc);
+                players.add(5*i+2, mObjects.get(i).get(j).player_position);
+                players.add(5*i+3, mObjects.get(i).get(j).player_jersey_number);
+                players.add(5*i+4, mObjects.get(i).get(j).player_status);
+            }
+        return players.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return 0;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 0;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
-    //@Override
-    //public int getCount() {
-    //    return mObjects.size();
-    //}
-
-    //@Override
-    //public Roster getItem(int position) {
-    //    return mObjects.get(position);
-    //}
-
-    //@Override
-    //public long getItemId(int position) {
-    //    return position;
-    //}
-
-    /*@Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         ViewHolder viewHolder;
 
         if (view == null) {
-            view = mInflater.inflate(R.layout.fragment_roster, parent, false);
+            view = mInflater.inflate(R.layout.grid_item, parent, false);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
         }
 
-        final Roster roster = getItem(position);
-
-        String image_url = "http://image.tmdb.org/t/p/w185" + movie.getImage();
+        final String roster = getItem(position);
 
         viewHolder = (ViewHolder) view.getTag();
 
-        Glide.with(getContext()).load(image_url).into(viewHolder.imageView);
-        viewHolder.titleView.setText(movie.getTitle());
+        viewHolder.titleView.setText(roster);
 
         return view;
-    }*/
+    }
 
     public static class ViewHolder {
-        //public final TextView jersey_number;
-        public final TextView name;
-        public final TextView market;
-
+        public final TextView titleView;
 
         public ViewHolder(View view) {
-        //    rank = (TextView) view.findViewById(R.id.team_rank);
-            name = (TextView) view.findViewById(R.id.team_name);
-            market = (TextView) view.findViewById(R.id.team_market);
+        titleView = (TextView) view.findViewById(R.id.grid_item_title);
         }
     }
 

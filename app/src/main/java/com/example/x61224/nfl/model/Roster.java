@@ -16,16 +16,22 @@ import java.util.Vector;
 public class Roster {
 
     private String team_id;
-    private Vector<Player> offense;
-    private Vector<Player> defense;
-    private Vector<Player> special_team;
+    public Vector<Player> offense;
+    public Vector<Player> defense;
+    public Vector<Player> special_team;
 
     public Roster() {
+        Vector<Player> offense = new Vector<>();
+        Vector<Player> defense = new Vector<>();
+        Vector<Player> special_team = new Vector<>();
 
     }
 
     public Roster(String team_id,JSONObject rosterJson) throws JSONException {
 
+        Vector<Player> offense = new Vector<>();
+        Vector<Player> defense = new Vector<>();
+        Vector<Player> special_team = new Vector<>();
         this.team_id=team_id;
         JSONObject offenseObject = rosterJson.getJSONObject("offense");
         JSONArray offensiveLineArray = offenseObject.getJSONArray("positions");
@@ -47,9 +53,9 @@ public class Roster {
                 entry.player_id = playerJson.getString("id");
                 entry.player_name = playerJson.getString("name");
                 entry.player_position = playerJson.getString("position");
-                entry.player_jersey_number = playerJson.getInt("jersey_number");
+                entry.player_jersey_number = playerJson.getString("jersey_number");
                 entry.player_status = playerJson.getString("status");
-                entry.player_depth = playerJson.getInt("depth");
+                entry.player_depth = playerJson.getString("depth");
                 offense.add(entry);
             }
         }
@@ -67,9 +73,9 @@ public class Roster {
                 entry.player_id = playerJson.getString("id");
                 entry.player_name = playerJson.getString("name");
                 entry.player_position = playerJson.getString("position");
-                entry.player_jersey_number = playerJson.getInt("jersey_number");
+                entry.player_jersey_number = playerJson.getString("jersey_number");
                 entry.player_status = playerJson.getString("status");
-                entry.player_depth = playerJson.getInt("depth");
+                entry.player_depth = playerJson.getString("depth");
                 defense.add(entry);
             }
         }
@@ -87,10 +93,10 @@ public class Roster {
                 entry.player_id = playerJson.getString("id");
                 entry.player_name = playerJson.getString("name");
                 entry.player_position = playerJson.getString("position");
-                entry.player_jersey_number = playerJson.getInt("jersey_number");
+                entry.player_jersey_number = playerJson.getString("jersey_number");
                 entry.player_status = playerJson.getString("status");
-                entry.player_depth = playerJson.getInt("depth");
-                defense.add(entry);
+                entry.player_depth = playerJson.getString("depth");
+                special_team.add(entry);
             }
         }
     }

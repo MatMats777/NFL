@@ -14,9 +14,9 @@ public class Player {
     public String player_id;
     public String player_name;
     public String player_position;
-    public int player_jersey_number;
+    public String player_jersey_number;
     public String player_status;
-    public int player_depth;
+    public String player_depth;
 
     public Player() {
 

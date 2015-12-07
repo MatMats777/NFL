@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.example.x61224.nfl.adapters.RosterAdapter;
+import com.example.x61224.nfl.model.Player;
 import com.example.x61224.nfl.model.Roster;
 
 import org.json.JSONArray;
@@ -25,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -49,7 +51,15 @@ public class RosterActivityFragment extends Fragment {
 
         mGridView.setAdapter(mRosterAdapter);
 
+            updateRoster();
+
+
         return view;
+    }
+
+    private void updateRoster() {
+           new FetchMoviesTask().execute();
+
     }
 
     public class FetchMoviesTask extends AsyncTask<String, Void, Roster> {
@@ -159,7 +169,11 @@ public class RosterActivityFragment extends Fragment {
         protected void onPostExecute(Roster roster) {
             if (roster != null) {
                 if (mRosterAdapter != null) {
-                    mRosterAdapter.setData(roster);
+                    Vector<Vector<Player>> data=new Vector<Vector<Player>>();
+                    data.add(0, roster.offense);
+                    data.add(1,roster.defense);
+                    data.add(2,roster.special_team);
+                    mRosterAdapter.setData(data);
                 }
             }
         }
