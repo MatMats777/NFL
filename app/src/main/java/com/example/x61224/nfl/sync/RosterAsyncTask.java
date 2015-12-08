@@ -37,6 +37,7 @@ public class RosterAsyncTask extends AbstractThreadedSyncAdapter {
     public static final int SYNC_INTERVAL = 60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+    private String id; // Id iniciado. Deve receber o parametro ID do roster favorito
 
     public RosterAsyncTask(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -53,22 +54,17 @@ public class RosterAsyncTask extends AbstractThreadedSyncAdapter {
         BufferedReader reader = null;
         String jsonStr = null;
 
-        String prim = "Teams";
-        String sec = "ARI";
-        String third = "depthchart";
+        String sec = id; //-- setar com o id do time
+        String third = "depthchart.json";
         // Access url
         try {
-            final String NFL_BASE_URL = "http://api.sportradar.us/nfl-t1/";
-            final String PRIM_PARAM = "";
-            final String SEC_PARAM = "";
-            final String THIRD_PARAM = "";
-            final String API_KEY_PARAM = ".json?api_key=";
+            final String NFL_BASE_URL = "http://api.sportradar.us/nfl-t1/teams";
+            final String API_KEY_PARAM = "api_key";
 
             Uri builtUri = Uri.parse(NFL_BASE_URL).buildUpon()
-                    .appendQueryParameter(PRIM_PARAM,prim)
-                    .appendQueryParameter(SEC_PARAM,sec)
-                    .appendQueryParameter(THIRD_PARAM,third)
-                    .appendQueryParameter(API_KEY_PARAM,getContext().getString(R.string.own_api_key))
+                    .appendPath(sec)//tirar comentario
+                    .appendPath(third)
+                    .appendQueryParameter(API_KEY_PARAM, getContext().getString(R.string.own_api_key))
                     .build();
 
             URL url = new URL(builtUri.toString());
@@ -126,7 +122,7 @@ public class RosterAsyncTask extends AbstractThreadedSyncAdapter {
 
     private void getRosterDataFromJson(String jsonStr){
 
-        getRosterDataFrom(jsonStr, "ARI");
+        getRosterDataFrom(jsonStr, id);
 
     }
 

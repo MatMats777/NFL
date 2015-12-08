@@ -1,5 +1,6 @@
 package com.example.x61224.nfl;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
@@ -47,10 +48,12 @@ public class RosterActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //id = getArguments().getString("team_id");
+        RosterActivity activity = (RosterActivity) getActivity();
+        Intent b = activity.getIntent();
+        id= b.getStringExtra("team_id");
         View view = inflater.inflate(R.layout.fragment_roster, container, false);
-        //TextView text1 = (TextView) view.findViewById(R.id.id);
-        //text1.setText(id);
+        TextView text1 = (TextView) view.findViewById(R.id.id);
+        text1.setText(id);
         mListView = (ListView) view.findViewById(R.id.listview_roster);
 
 
@@ -129,8 +132,7 @@ public class RosterActivityFragment extends Fragment {
             BufferedReader reader = null;
             String jsonStr = null;
 
-            //String sec = id;
-            String sec = "ARI";
+            String sec = id;
             String third = "depthchart.json";
             // Access url
             try {

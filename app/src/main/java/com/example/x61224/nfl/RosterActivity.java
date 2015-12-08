@@ -18,15 +18,15 @@ public class RosterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent i = getIntent();
+        String id = i.getStringExtra("team_id");
+        Intent a = new Intent(this,RosterActivityFragment.class);
+        a.putExtra("team_id",id);
+        setIntent(a);
+
         setContentView(R.layout.activity_roster);
-        /*if (savedInstanceState == null) {
-            Bundle arguments = new Bundle();
-            arguments.putString("team_id",getIntent().getExtras().getString("team_id"));
 
-            RosterActivityFragment fragment = new RosterActivityFragment();
-            fragment.setArguments(arguments);
 
-        }*/
     }
 
 
