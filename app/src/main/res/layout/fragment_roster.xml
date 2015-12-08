@@ -18,8 +18,7 @@
         android:paddingTop="16dp">
 
         <TextView
-            android:id="@+id/roster_title"
-            android:text="@string/roster_title"
+            android:id="@+id/id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
@@ -31,15 +30,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textView" />
+        android:text="@string/roster_title"
+        android:id="@+id/roster_title"
+        android:singleLine="false" />
 
-    <GridView
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/gridview_roster"
-        android:numColumns="5"
-        android:nestedScrollingEnabled="false" />
+        android:id="@+id/listview_roster" />
 
 
 </LinearLayout>
