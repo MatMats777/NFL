@@ -30,7 +30,7 @@ public class Player implements Serializable {
 
     public Player(JSONObject player,JSONObject position) throws JSONException {
 
-        this.original_position = position.getString("name");
+        this.original_position = position.getString("desc");
         this.name = player.getString("name");
         this.position = player.getString("position");
         this.number = player.getString("jersey_number");

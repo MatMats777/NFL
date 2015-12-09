@@ -11,7 +11,10 @@
         android:id="@+id/nameTag"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,46 +24,61 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/nameTag"
         android:layout_toEndOf="@+id/nameTag"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Position:"
-        android:id="@+id/positionTag"
+        android:text="Team Position:"
+        android:id="@+id/original_positionTag"
         android:layout_below="@+id/nameTag"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:singleLine="false" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/position"
-        android:layout_below="@+id/nameTag"
-        android:layout_toRightOf="@+id/positionTag"
-        android:layout_toEndOf="@+id/nameTag" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Original Position:"
-        android:id="@+id/original_positionTag"
-        android:layout_below="@+id/positionTag"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:singleLine="false"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/original_position"
-        android:layout_below="@+id/position"
+        android:layout_below="@+id/nameTag"
         android:layout_toRightOf="@+id/original_positionTag"
-        android:layout_toEndOf="@+id/original_positionTag" />
+        android:layout_toEndOf="@+id/nameTag"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Player Position:"
+        android:id="@+id/positionTag"
+        android:layout_below="@+id/original_positionTag"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/position"
+        android:layout_below="@+id/original_positionTag"
+        android:layout_toRightOf="@+id/positionTag"
+        android:layout_toEndOf="@+id/positionTag"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -71,16 +89,22 @@
         android:layout_alignParentTop="false"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/original_positionTag" />
+        android:layout_below="@+id/positionTag"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/number"
-        android:layout_below="@+id/original_position"
+        android:layout_below="@+id/position"
         android:layout_toRightOf="@+id/numberTag"
-        android:layout_toEndOf="@+id/original_positionTag" />
+        android:layout_toEndOf="@+id/original_positionTag"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -91,7 +115,11 @@
         android:layout_alignParentTop="false"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
-        android:layout_below="@+id/numberTag" />
+        android:layout_below="@+id/numberTag"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -100,5 +128,9 @@
         android:id="@+id/status"
         android:layout_alignTop="@+id/statusTag"
         android:layout_toRightOf="@+id/statusTag"
-        android:layout_toEndOf="@+id/statusTag" />
+        android:layout_toEndOf="@+id/statusTag"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 </RelativeLayout>

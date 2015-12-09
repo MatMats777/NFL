@@ -1,8 +1,10 @@
 package com.example.x61224.nfl;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -51,11 +54,14 @@ public class RosterActivityFragment extends Fragment {
         RosterActivity activity = (RosterActivity) getActivity();
         Intent b = activity.getIntent();
         id= b.getStringExtra("team_id");
+        String id2 = id.toLowerCase();
         View view = inflater.inflate(R.layout.fragment_roster, container, false);
-        TextView text1 = (TextView) view.findViewById(R.id.id);
-        text1.setText(id);
+        LinearLayout linear = (LinearLayout)view.findViewById(R.id.top_team);
+        int aux = getActivity().getResources().getIdentifier(id2, "drawable", getActivity().getPackageName());
         mListView = (ListView) view.findViewById(R.id.listview_roster);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            linear.setBackgroundResource(aux);
+        }
 
         mRosterAdapter = new RosterAdapter(new ArrayList(),getActivity());
 
