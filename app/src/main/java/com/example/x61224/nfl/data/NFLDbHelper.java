@@ -13,7 +13,7 @@ import com.example.x61224.nfl.data.NFLContract.PlayersEntry;
 public class NFLDbHelper  extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     static final String DATABASE_NAME = "teams.db";
 
@@ -78,6 +78,7 @@ public class NFLDbHelper  extends SQLiteOpenHelper {
         // If you want to update the schema without wiping data, commenting out the next 2 lines
         // should be your top priority before modifying this method.
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TeamsEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PlayersEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

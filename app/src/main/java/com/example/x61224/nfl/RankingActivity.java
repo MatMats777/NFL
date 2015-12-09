@@ -17,7 +17,6 @@ public class RankingActivity extends AppCompatActivity implements RankingActivit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
         NFLSyncAdapter.initializeSyncAdapter(this);
-        NFLSyncAdapter.syncImmediately(this);
     }
 
 
@@ -48,7 +47,8 @@ public class RankingActivity extends AppCompatActivity implements RankingActivit
         // It is called from MainActivityFragment, when a movie is selected.
         // Start Detail Activity, sending the uri param.
 
-        Intent intent = new Intent(this, RosterActivity.class).putExtra ("team_id", teamId);
+        Intent intent = new Intent(this, RosterActivity.class).putExtra("team_id", teamId);
+        System.out.println(teamId);
         startActivity(intent);
     }
 }

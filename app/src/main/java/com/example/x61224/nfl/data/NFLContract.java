@@ -86,15 +86,15 @@ public class NFLContract {
         public static final String COLUMN_PLAYER_DEPTH = "player_depth";
 
 
-        public static Uri buildTeamUri(long id) {
+        public static Uri buildRosterUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        public static Uri buildTeamUriWithId(String team_id) {
-            return CONTENT_URI.buildUpon().appendPath(team_id).build();
+        public static Uri buildRosterUriWithId(String roster_id) {
+            return CONTENT_URI.buildUpon().appendPath(roster_id).build();
         }
 
-        public static Uri buildTeams() {
+        public static Uri buildRosters() {
             return CONTENT_URI;
         }
 

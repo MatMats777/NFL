@@ -2,13 +2,25 @@ package com.example.x61224.nfl.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.x61224.nfl.R;
@@ -25,6 +37,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
 
+import com.example.x61224.nfl.RankingActivity;
+import com.example.x61224.nfl.RankingActivityFragment;
 import com.example.x61224.nfl.data.NFLContract;
 
 /**
@@ -34,9 +48,10 @@ public class NFLSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = NFLSyncAdapter.class.getSimpleName();
     // Interval at which to sync with the ranking, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
-    public static final int SYNC_INTERVAL = 60 * 180;
+    public static final int SYNC_INTERVAL = 1;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+    private static final int RANKING_NOTIFICATION_ID = 3001;
 
     public NFLSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -46,7 +61,6 @@ public class NFLSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         // called to sync
         Log.d(LOG_TAG, "Starting sync");
-        String movieJsonStr = null;
         // access url and get json
         String urlStr = "http://api.sportradar.us/nfl-t1/teams/2015/rankings.json?api_key=x3j2gsqzk7bv7qnj5xjc2gbw";
 
@@ -179,24 +193,138 @@ public class NFLSyncAdapter extends AbstractThreadedSyncAdapter {
                     }
                 }
             }
+            // get old ranking
+            Cursor all_teams = getContext().getContentResolver().query(
+                    NFLContract.TeamsEntry.CONTENT_URI,
+                    RankingActivityFragment.TEAMS_COLUMNS,
+                    "1",
+                    null,
+                    null,
+                    null
+            );
 
-            // delete old data
-            getContext().getContentResolver().delete(NFLContract.TeamsEntry.CONTENT_URI, null, null);
+            // iterate all_teams
+            Boolean change = false;
+            String team_changed = null;
+            String new_ranking = null;
+            String team_changed_id = null;
+            all_teams.moveToFirst();
+            while(!all_teams.isAfterLast()){
+                System.out.println("iteration");
+                for(int i=0; i<cVVector.size(); i++){
+                    if(all_teams.getString(RankingActivityFragment.COL_TEAM_ID).
+                            equals(cVVector.get(i).getAsString(NFLContract.TeamsEntry.COLUMN_TEAM_ID))){
 
-            // add all reviews to database
-            Integer inserted = 0;
-            if ( cVVector.size() > 0 ) {
-                ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                cVVector.toArray(cvArray);
-                inserted = getContext().getContentResolver().bulkInsert(NFLContract.TeamsEntry.CONTENT_URI, cvArray);
+                        if(!all_teams.getString(RankingActivityFragment.COL_RANK_CONFERENCE).
+                                equals(cVVector.get(i).getAsString(NFLContract.TeamsEntry.COLUMN_RANK_CONFERENCE))){
+                            team_changed = all_teams.getString(RankingActivityFragment.COL_NAME);
+                            new_ranking = "Conference: " + cVVector.get(i).getAsString(NFLContract.TeamsEntry.COLUMN_RANK_CONFERENCE);
+                            team_changed_id = all_teams.getString(RankingActivityFragment.COL_TEAM_ID);
+                            change = true;
+                            break;
+                        }
+                        if(!all_teams.getString(RankingActivityFragment.COL_RANK_DIVISION).
+                                equals(cVVector.get(i).getAsString(NFLContract.TeamsEntry.COLUMN_RANK_DIVISION))){
+                            team_changed = all_teams.getString(RankingActivityFragment.COL_NAME);
+                            new_ranking = "Division: " + cVVector.get(i).getAsString(NFLContract.TeamsEntry.COLUMN_RANK_DIVISION);
+                            team_changed_id = all_teams.getString(RankingActivityFragment.COL_TEAM_ID);
+                            change = true;
+                            break;
+                        }
+                        System.out.println(all_teams.getString(RankingActivityFragment.COL_NAME) + " - same.");
+                        break;
+                    }
+                }
+                all_teams.moveToNext();
             }
-            Log.d(LOG_TAG, "Sync Complete. " + inserted.toString() + " Inserted");
+
+            if(change) {
+                System.out.println("CHANGED");
+                // delete old data
+                getContext().getContentResolver().delete(NFLContract.TeamsEntry.CONTENT_URI, null, null);
+
+                // add all reviews to database
+                Integer inserted = 0;
+                if (cVVector.size() > 0) {
+                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                    cVVector.toArray(cvArray);
+                    inserted = getContext().getContentResolver().bulkInsert(NFLContract.TeamsEntry.CONTENT_URI, cvArray);
+                }
+                Log.d(LOG_TAG, "Sync Complete. " + inserted.toString() + " Inserted");
+
+                // notification
+                notifyRanking(team_changed, new_ranking, team_changed_id);
+            }
+            else
+                notifyRanking("Ranking", " still the same", "nfl_logo_black");
 
         }catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
 
+    }
+
+    private void notifyRanking(String team, String ranking, String team_id){
+        System.out.println("NOTIFY");
+        Context context = getContext();
+        Resources resources = context.getResources();
+
+        System.out.println("NOTIFICATION");
+
+        // NotificationCompatBuilder is a very convenient way to build backward-compatible
+        // notifications.  Just throw in some data.
+        Bitmap largeIcon = BitmapFactory.decodeResource(resources,R.drawable.car);
+        String title = team + " - " + ranking;
+        android.support.v4.app.NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(getContext())
+                        .setColor(resources.getColor(R.color.dark_green))
+                        .setSmallIcon(R.drawable.car)
+                        .setLargeIcon(largeIcon)
+                        .setContentTitle(context.getString(R.string.app_name))
+                        .setContentText(title);
+
+        // Make something interesting happen when the user clicks on the notification.
+        // In this case, opening the app is sufficient.
+        Intent resultIntent = new Intent(context, RankingActivity.class);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        NotificationManager mNotificationManager =
+            (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    // WEATHER_NOTIFICATION_ID allows you to update the notification later on.
+        mNotificationManager.notify(RANKING_NOTIFICATION_ID, mBuilder.build());
+
+    }
+
+    /**
+     * Helper method to schedule the sync adapter periodic execution
+     */
+    public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
+        Account account = getSyncAccount(context);
+        String authority = context.getString(R.string.content_authority);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // we can enable inexact timers in our periodic sync
+            SyncRequest request = new SyncRequest.Builder().
+                    syncPeriodic(syncInterval, flexTime).
+                    setSyncAdapter(account, authority).
+                    setExtras(new Bundle()).build();
+            ContentResolver.requestSync(request);
+        } else {
+            ContentResolver.addPeriodicSync(account,
+                    authority, new Bundle(), syncInterval);
+        }
     }
 
     /**
@@ -256,7 +384,7 @@ public class NFLSyncAdapter extends AbstractThreadedSyncAdapter {
         /*
          * Since we've created an account
          */
-        //NFLSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
+        NFLSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
         /*
          * Without calling setSyncAutomatically, our periodic sync will not be enabled.

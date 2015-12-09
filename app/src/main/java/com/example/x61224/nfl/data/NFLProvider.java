@@ -34,6 +34,7 @@ public class NFLProvider extends ContentProvider {
         // content_authority/teams/id
         matcher.addURI(authority, NFLContract.PATH_TEAMS + "/*", TEAM_WITH_ID);
 
+        matcher.addURI(authority, NFLContract.PATH_ROSTER + "/*", ROSTER_WITH_ID);
         return matcher;
     }
 
@@ -55,6 +56,10 @@ public class NFLProvider extends ContentProvider {
                 return NFLContract.TeamsEntry.CONTENT_ITEM_TYPE;
             case TEAMS:
                 return NFLContract.TeamsEntry.CONTENT_TYPE;
+            case ROSTER_WITH_ID:
+                return NFLContract.PlayersEntry.CONTENT_ITEM_TYPE;
+            case ROSTERS:
+                return NFLContract.PlayersEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -108,6 +113,24 @@ public class NFLProvider extends ContentProvider {
                 );
                 break;
             }
+            // roster/id
+            case ROSTER_WITH_ID: {
+                // roster.roster_id = ?
+                selection = NFLContract.PlayersEntry.TABLE_NAME +
+                        "." + NFLContract.PlayersEntry.COLUMN_ROSTER_ID + " = ?";
+                // id
+                selectionArgs = new String[]{NFLContract.PlayersEntry.getIdFromUri(uri)};
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        NFLContract.PlayersEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -126,6 +149,14 @@ public class NFLProvider extends ContentProvider {
                 long _id = db.insert(NFLContract.TeamsEntry.TABLE_NAME, null, values);
                 if (_id > 0)
                     returnUri = NFLContract.TeamsEntry.buildTeamUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case ROSTERS: {
+                long _id = db.insert(NFLContract.PlayersEntry.TABLE_NAME, null, values);
+                if (_id > 0)
+                    returnUri = NFLContract.PlayersEntry.buildRosterUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -149,6 +180,10 @@ public class NFLProvider extends ContentProvider {
                 rowsDeleted = db.delete(
                         NFLContract.TeamsEntry.TABLE_NAME, selection, selectionArgs);
                 break;
+            case ROSTERS:
+                rowsDeleted = db.delete(
+                        NFLContract.PlayersEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -171,7 +206,10 @@ public class NFLProvider extends ContentProvider {
                 rowsUpdated = db.update(NFLContract.TeamsEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
-
+            case ROSTERS:
+                rowsUpdated = db.update(NFLContract.PlayersEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -193,6 +231,23 @@ public class NFLProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insert(NFLContract.TeamsEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            }
+            case ROSTERS: {
+                db.beginTransaction();
+                returnCount = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(NFLContract.PlayersEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

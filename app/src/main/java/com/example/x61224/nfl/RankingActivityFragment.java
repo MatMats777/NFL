@@ -38,7 +38,7 @@ public class RankingActivityFragment extends Fragment implements LoaderManager.L
     private static final String SELECTED_KEY = "selected_position";
     private static final int FORECAST_LOADER = 0;
 
-    private static final String[] TEAMS_COLUMNS = {
+    public static final String[] TEAMS_COLUMNS = {
             TeamsEntry.TABLE_NAME + "." + TeamsEntry._ID,
             TeamsEntry.COLUMN_TEAM_ID,
             TeamsEntry.COLUMN_NAME,
